@@ -18,6 +18,7 @@ namespace SampleAPI.Test
         {
             var result = _valuesController.Get();
             Assert.Equal("value1", ((string[])result.Value)[0]);
+            Assert.Equal("value2", ((string[])result.Value)[1]);
         }
     }
 }
