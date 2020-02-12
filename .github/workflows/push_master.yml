@@ -31,12 +31,13 @@ jobs:
       run: dotnet build SampleAPI.sln --no-incremental
     - name: Sonar Scanner End
       run: dotnet sonarscanner end /d:sonar.login=e988daa458f81eb3fd2a5fa7b887b803a6920c5c
+      env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN_SampleAPI }}
     - name: Build the Docker Image
       run: docker build . --file ./SampleAPI.Code/Dockerfile --tag praveshchhabra/sampleapi
     - name: Login into Docker Hub
       run: docker login --username praveshchhabra --password ckpl@123
     - name: Push the Docker Image
       run: docker push praveshchhabra/sampleapi
-      env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
     
