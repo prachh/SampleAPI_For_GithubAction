@@ -38,5 +38,5 @@ jobs:
     - name: Push the Docker Image
       run: docker push praveshchhabra/sampleapi
       env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN_SampleAPI }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     
