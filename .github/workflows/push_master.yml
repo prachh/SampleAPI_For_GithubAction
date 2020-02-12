@@ -15,28 +15,12 @@ jobs:
       uses: actions/setup-dotnet@v1.0.0
       with:
         version: 2.2.104
-    - name: Install Sonar
-      run: dotnet tool install --tool-path . dotnet-sonarscanner --version 4.7.1
-    - name: Update PATH
-      run: echo "::add-path::/home/runner/work/SampleAPI/SampleAPI"
-    - name: ECHO PATH
-      run: echo $PATH
-    - name: Generate Code Coverge File
-      run: dotnet test SampleAPI.Test/SampleAPI.Test.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
-    - name: Build Server Shutdown
-      run: dotnet build-server shutdown
-    - name: Sonar Scanner Begin
-      run: dotnet sonarscanner begin /k:SampleAPI /v:1.0  /n:SampleAPI  /d:sonar.host.url=https://sonarcloud.io /o:testrepockeditor  /d:sonar.login=e988daa458f81eb3fd2a5fa7b887b803a6920c5c /d:sonar.coverage.exclusions=**Tests*.cs /d:sonar.cs.opencover.reportsPaths=SampleAPI.Test/coverage.opencover.xml
     - name: Code Rebulild
       run: dotnet build SampleAPI.sln --no-incremental
-    - name: Sonar Scanner End
-      run: dotnet sonarscanner end /d:sonar.login=e988daa458f81eb3fd2a5fa7b887b803a6920c5c
-      env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN_SampleAPI }}
     - name: Build the Docker Image
       run: docker build . --file ./SampleAPI.Code/Dockerfile --tag praveshchhabra/sampleapi
     - name: Login into Docker Hub
-      run: docker login --username praveshchhabra --password ckpl@123
+      run: docker login ${{ secrets.dockercred }}
     - name: Push the Docker Image
       run: docker push praveshchhabra/sampleapi
       
