@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using SampleAPI.Data;
+using SampleAPI.Repository;
 
 namespace SampleAPI.Controllers
 {
@@ -10,36 +9,26 @@ namespace SampleAPI.Controllers
     [ApiController]
     public class ValuesController : ControllerBase
     {
-        // GET api/values
+        public readonly IValueRepo valueRepo;
+        public ValuesController(IValueRepo vr)
+        {
+            valueRepo = vr;
+        }
+
+       
         [HttpGet]
-        public ActionResult<IEnumerable<string>> Get()
+        [Route("ipinfo")]
+        public async Task<ActionResult<IPtoCountry>> GetIpInfo(string ip)
         {
-            return new string[] { "value1", "value2", "value3" };
+            return await valueRepo.GetIpInfo(ip);
         }
 
-        // GET api/values/5
-        [HttpGet("{id}")]
-        public ActionResult<string> Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/values
         [HttpPost]
-        public void Post([FromBody] string value)
+        [Route("calculate")]
+        public async Task<ActionResult<double>> CalCulate([FromBody]Operation operation)
         {
+            return await valueRepo.CalCulater(operation);
         }
 
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }
