@@ -1,10 +1,8 @@
 name: Merge to Master
-
 on:
   push:
     branches:
       - master
-
 jobs:
   Push_Master:
     name: Test, Build And Deploy
