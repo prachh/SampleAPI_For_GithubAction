@@ -1,4 +1,4 @@
-name: Push to Master
+name: Merge to Master
 
 on:
   push:
@@ -6,16 +6,18 @@ on:
       - master
 
 jobs:
-  sonarcloud:
-    name: Test, Build, Analysis And Deploy
+  Push_Master:
+    name: Test, Build And Deploy
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
     - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1.0.0
+      uses: actions/setup-dotnet@v1
       with:
-        version: 2.2.104
-    - name: Code Rebulild
+        dotnet-version: 3.1.100
+    - name: Run Unit Test
+      run: dotnet test SampleAPI.Test/SampleAPI.Test.csproj
+    - name: Code Build
       run: dotnet build SampleAPI.sln --no-incremental
     - name: Build the Docker Image
       run: docker build . --file ./SampleAPI.Code/Dockerfile --tag praveshchhabra/sampleapi
@@ -23,5 +25,3 @@ jobs:
       run: docker login ${{ secrets.dockercred }}
     - name: Push the Docker Image
       run: docker push praveshchhabra/sampleapi
-      
-    
