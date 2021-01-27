@@ -12,9 +12,9 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1.0.0
+      uses: actions/setup-dotnet@v1
       with:
-        version: 3.1.100
+        dotnet-version: 3.1.100
     - name: Set up JDK 11
       uses: actions/setup-java@v1
       with:
@@ -23,6 +23,8 @@ jobs:
       run: dotnet tool install --tool-path . dotnet-sonarscanner --version 4.8.1
     - name: Update PATH
       run: echo "/home/runner/work/SampleAPI_For_GithubAction/SampleAPI_For_GithubAction" >> $GITHUB_PATH
+    - name: ECHO PATH
+      run: echo $PATH
     - name: Generate Code Coverge File
       run: dotnet test SampleAPI.Test/SampleAPI.Test.csproj /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
     - name: Build Server Shutdown
